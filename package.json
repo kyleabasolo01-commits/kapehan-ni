@@ -1,0 +1,6 @@
+{
+  "name":"kapehan-ni-kaloy","version":"1.0.0","main":"server.js",
+  "scripts":{"start":"node server.js","dev":"nodemon server.js"},
+  "dependencies":{"better-sqlite3":"^11.8.1","express":"^4.21.2","multer":"^1.4.5-lts.1"},
+  "devDependencies":{"nodemon":"^3.1.9"}
+}
