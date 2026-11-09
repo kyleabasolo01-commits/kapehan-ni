@@ -21,3 +21,6 @@ npm-debug.log*
 # Operating system
 .DS_Store
 Thumbs.db
+# SQLite temporary files
+*-shm
+*-wal
