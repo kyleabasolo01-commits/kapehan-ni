@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAPEHAN NI KALOY | Coffee Shop Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-mark">K</div>
+            <div>
+                <b>KAPEHAN NI KALOY</b>
+                <small>Coffee Shop System</small>
+            </div>
+        </div>
+
+        <nav>
+            <label>MAIN MENU</label>
+            <a class="nav active" href="#dashboard" data-page="dashboard">▦ <span>Dashboard</span></a>
+            <a class="nav" href="#products" data-page="products">☕ <span>Coffee Products</span></a>
+            <a class="nav" href="#orders" data-page="orders">▤ <span>Orders</span></a>
+            <a class="nav" href="#categories" data-page="categories">▣ <span>Categories</span></a>
+
+            <label>INVENTORY</label>
+            <a class="nav" href="#stock" data-page="stock">▦ <span>Stock Management</span></a>
+            <a class="nav" href="#stock-in" data-page="stock-in">＋ <span>Stock In</span></a>
+            <a class="nav" href="#stock-out" data-page="stock-out">－ <span>Stock Out</span></a>
+            <a class="nav" href="#history" data-page="history">◷ <span>Inventory History</span></a>
+            <a class="nav" href="#reports" data-page="reports">▥ <span>Reports</span></a>
+
+            <label>SYSTEM</label>
+            <a class="nav" href="#notifications" data-page="notifications">♧ <span>Notifications</span><i id="notificationCount">0</i></a>
+            <a class="nav" href="#settings" data-page="settings">⚙ <span>Settings</span></a>
+        </nav>
+
+        <div class="owner">
+            <div class="avatar">K</div>
+            <div>
+                <b>Shop Owner</b>
+                <small>Administrator</small>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1 id="pageTitle">Dashboard Overview</h1>
+                <p id="pageSubtitle">Welcome to Kapehan ni Kaloy!</p>
+            </div>
+            <div class="top-right">
+                <button id="notificationButton" class="icon-button">♧</button>
+                <span id="currentDate"></span>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <!-- DASHBOARD -->
+            <section class="page active" id="dashboard">
+
+                <div class="hero">
+                    <div>
+                        <span class="eyebrow">COFFEE SHOP MANAGEMENT</span>
+                        <h2>Good day, Shop Owner.</h2>
+                        <p>Here's what's happening at your coffee shop today.</p>
+                    </div>
+                    <div class="hero-cup">☕</div>
+                </div>
+
+                <div class="stats">
+                    <article class="stat">
+                        <span class="stat-symbol">☕</span>
+                        <small>Total Coffee Products</small>
+                        <strong id="totalProducts">0</strong>
+                        <em>Registered products</em>
+                    </article>
+
+                    <article class="stat">
+                        <span class="stat-symbol green">▦</span>
+                        <small>Available Stock</small>
+                        <strong id="availableStock">0</strong>
+                        <em>Total units in inventory</em>
+                    </article>
+
+                    <article class="stat">
+                        <span class="stat-symbol amber">⚠</span>
+                        <small>Low Stock</small>
+                        <strong id="lowStock">0</strong>
+                        <em>Products needing restock</em>
+                    </article>
+
+                    <article class="stat">
+                        <span class="stat-symbol red">!</span>
+                        <small>Out of Stock</small>
+                        <strong id="outOfStock">0</strong>
+                        <em>Products unavailable</em>
+                    </article>
+
+                    <article class="stat">
+                        <span class="stat-symbol">▤</span>
+                        <small>Today's Orders</small>
+                        <strong id="todayOrders">0</strong>
+                        <em>In-store orders</em>
+                    </article>
+                </div>
+
+                <div class="two-col">
+                    <article class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h3>Low Stock Alerts</h3>
+                                <p>Products that need restocking</p>
+                            </div>
+                            <span class="pill" id="alertCount">0 Alerts</span>
+                        </div>
+                        <div id="lowStockList" class="empty">No low stock products.</div>
+                    </article>
+
+                    <article class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h3>Recently Added Products</h3>
+                                <p>Your latest coffee products</p>
+                            </div>
+                            <a href="#products" data-page="products">View all</a>
+                        </div>
+                        <div id="recentProducts" class="product-list empty">No products yet.</div>
+                    </article>
+                </div>
+
+                <article class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <h3>Inventory Overview</h3>
+                            <p>Current stock summary</p>
+                        </div>
+                    </div>
+                    <div id="inventoryOverview" class="overview"></div>
+                </article>
+            </section>
+
+            <!-- COFFEE PRODUCTS -->
+            <section class="page" id="products">
+                <article class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <h3>Coffee Products</h3>
+                            <p>Manage your coffee menu and inventory.</p>
+                        </div>
+                        <button class="btn" id="addProductButton">＋ Add Product</button>
+                    </div>
+
+                    <div class="toolbar">
+                        <input id="productSearch" placeholder="Search products...">
+                        <select id="productFilter">
+                            <option value="all">All Products</option>
+                            <option value="available">Available</option>
+                            <option value="low">Low Stock</option>
+                            <option value="out">Out of Stock</option>
+                        </select>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Product</th>
+                                    <th>Flavor</th>
+                                    <th>Size</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productTableBody">
+                                <tr><td colspan="8">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+            </section>
+
+            <!-- ORDERS -->
+            <section class="page" id="orders">
+                <article class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <h3>In-Store Orders</h3>
+                            <p>Create dine-in or takeout orders.</p>
+                        </div>
+                        <button class="btn" id="addOrderButton">＋ New Order</button>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order No.</th>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderTableBody"></tbody>
+                        </table>
+                    </div>
+                </article>
+            </section>
+
+            <!-- CATEGORIES -->
+            <section class="page" id="categories">
+                <article class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <h3>Categories</h3>
+                            <p>Organize your coffee products.</p>
+                        </div>
+                        <button class="btn" id="addCategoryButton">＋ Add Category</button>
+                    </div>
+                    <div id="categoryList" class="category-grid"></div>
+                </article>
+            </section>
+
+            <!-- STOCK MANAGEMENT -->
+            <section class="page" id="stock">
+                <article class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <h3>Stock Management</h3>
+                            <p>Monitor product quantities and stock status.</p>
+                        </div>
+                    </div>
+
+                    <div class="toolbar">
+                        <input id="stockSearch" placeholder="Search product...">
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Current Quantity</th>
+                                    <th>Minimum Stock</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stockTableBody"></tbody>
+                        </table>
+                    </div>
+                </article>
+            </section>
+
+            <!-- STOCK IN -->
+            <section class="page" id="stock-in">
+                <article class="panel form-panel">
+                    <h3>Stock In</h3>
+                    <p>Add inventory to an existing coffee product.</p>
+
+                    <form id="stockInForm">
+
+                        <label>Select Product</label>
+
+                        <input type="hidden" id="stockInProduct">
+
+                        <div class="custom-product-select" id="stockInDropdown">
+                            <button type="button" class="product-select-button">
+                                <span class="selected-product">
+                                    Select a coffee product
+                                </span>
+                                <span class="dropdown-arrow">⌄</span>
+                            </button>
+                            <div class="product-select-options"></div>
+                        </div>
+
+                        <label>
+                            Quantity to Add
+                            <input id="stockInQuantity" type="number" min="1" step="1" required>
+                        </label>
+
+                        <label>
+                            Note (optional)
+                            <input id="stockInNote" placeholder="e.g. New supplier delivery">
+                        </label>
+
+                        <button class="btn">Save Stock In</button>
+                    </form>
+                </article>
+            </section>
+
+            <!-- STOCK OUT -->
+            <section class="page" id="stock-out">
+                <article class="panel form-panel">
+                    <h3>Stock Out</h3>
+                    <p>Record inventory deductions or wastage.</p>
+
+                    <form id="stockOutForm">
+
+                        <label>Select Product</label>
+
+                        <input type="hidden" id="stockOutProduct">
+
+                        <div class="custom-product-select" id="stockOutDropdown">
+                            <button type="button" class="product-select-button">
+                                <span class="selected-product">
+                                    Select a coffee product
+                                </span>
+                                <span class="dropdown-arrow">⌄</span>
+                            </button>
+                            <div class="product-select-options"></div>
+                        </div>
+
+                        <label>
+                            Quantity to Remove
+                            <input id="stockOutQuantity" type="number" min="1" step="1" required>
+                        </label>
+
+                        <label>
+                            Note (optional)
+                            <input id="stockOutNote" placeholder="e.g. Damaged or used">
+                        </label>
+
+                        <button class="btn">Save Stock Out</button>
+                    </form>
+                </article>
+            </section>
+
+            <!-- INVENTORY HISTORY -->
+            <section class="page" id="history">
+                <article class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <h3>Inventory History</h3>
+                            <p>All stock in and stock out transactions.</p>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Product</th>
+                                    <th>Transaction</th>
+                                    <th>Quantity</th>
+                                    <th>Note</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody"></tbody>
+                        </table>
+                    </div>
+                </article>
+            </section>
+
+            <!-- REPORTS -->
+            <section class="page" id="reports">
+                <article class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <h3>Reports</h3>
+                            <p>Inventory and sales summary.</p>
+                        </div>
+                        <button class="btn secondary" id="printReportButton">Print Report</button>
+                    </div>
+                    <div id="reportContent"></div>
+                </article>
+            </section>
+
+            <!-- NOTIFICATIONS -->
+            <section class="page" id="notifications">
+                <article class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <h3>Notifications</h3>
+                            <p>Inventory alerts and system updates.</p>
+                        </div>
+                        <button class="btn secondary" id="markNotificationsRead">Mark all as read</button>
+                    </div>
+                    <div id="notificationList"></div>
+                </article>
+            </section>
+
+            <!-- SETTINGS -->
+            <section class="page" id="settings">
+                <article class="panel form-panel">
+                    <h3>Shop Settings</h3>
+                    <p>Update your shop information.</p>
+
+                    <form id="settingsForm">
+                        <label>
+                            Shop Name
+                            <input id="shopName" required>
+                        </label>
+
+                        <label>
+                            Shop Description
+                            <textarea id="shopDescription" rows="3"></textarea>
+                        </label>
+
+                        <label>
+                            Low Stock Threshold
+                            <input id="minimumStock" type="number" min="1" required>
+                        </label>
+
+                        <button class="btn">Save Settings</button>
+                    </form>
+                </article>
+            </section>
+
+            <footer>
+                © 2026 KAPEHAN NI KALOY · Coffee Shop Management System
+            </footer>
+
+        </div>
+    </main>
+</div>
+
+<!-- ADD / EDIT PRODUCT MODAL -->
+<div class="modal" id="productModal">
+    <div class="modal-box">
+
+        <div class="panel-head">
+            <h3 id="productModalTitle">Add Coffee Product</h3>
+            <button class="icon-button" id="closeProductModal">×</button>
+        </div>
+
+        <form id="productForm">
+
+            <input type="hidden" id="productId">
+
+            <label>
+                Product Name
+                <input id="productName" required>
+            </label>
+
+            <label>
+                Flavor
+                <input id="productFlavor">
+            </label>
+
+            <label>
+                Size
+                <select id="productSize">
+                    <option>Regular</option>
+                    <option>Large</option>
+                </select>
+            </label>
+
+            <label>
+                Description
+                <textarea id="productDescription" rows="2"></textarea>
+            </label>
+
+            <div class="form-grid">
+                <label>
+                    Cost Price
+                    <input id="productCost" type="number" min="0" step=".01" value="0" required>
+                </label>
+
+                <label>
+                    Selling Price
+                    <input id="productPrice" type="number" min="0" step=".01" value="149" required>
+                </label>
+
+                <label>
+                    Initial Quantity
+                    <input id="productQuantity" type="number" min="0" value="0" required>
+                </label>
+
+                <label>
+                    Minimum Stock
+                    <input id="productMinStock" type="number" min="1" value="5" required>
+                </label>
+            </div>
+
+            <label>
+                Product Image
+                <input id="productImage" type="file" accept="image/*">
+            </label>
+
+            <img id="imagePreview" class="preview" alt="Image preview">
+
+            <div class="modal-actions">
+                <button type="button" class="btn secondary" id="cancelProductButton">Cancel</button>
+                <button class="btn">Save Product</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
